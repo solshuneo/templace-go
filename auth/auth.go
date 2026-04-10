@@ -10,22 +10,19 @@ type UserInterface interface {
 	Find(user *model.User) model.WrapError
 }
 
-type AuthService struct {
+type Service struct {
 	UserInterface UserInterface
 }
 
-func (auth *AuthService) Register(user *model.User) (err model.WrapError) {
+func (auth *Service) Register(user *model.User) model.WrapError {
 	mutex := sync.Mutex{}
 	mutex.Lock()
-	err = auth.UserInterface.Create(user)
+	var err = auth.UserInterface.Create(user)
 	mutex.Unlock()
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
-func (auth *AuthService) Login(user *model.User) (token *model.Token, err model.WrapError) {
-	err = auth.UserInterface.Find(user)
+func (auth *Service) Login(user *model.User) (*model.Token, model.WrapError) {
+	var err = auth.UserInterface.Find(user)
 	return model.NewToken(), err
 }

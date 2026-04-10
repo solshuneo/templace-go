@@ -12,7 +12,7 @@ import (
 func main() {
 	initDB()
 	userRepo := gsql.NewGormUserRepository(db)
-	authService := auth.AuthService{
+	authService := auth.Service{
 		UserInterface: userRepo,
 	}
 	authService.Register(&model.User{

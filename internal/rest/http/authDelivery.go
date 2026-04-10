@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"lotesaleagent/auth"
 	"lotesaleagent/model"
 	"net/http"
@@ -9,18 +10,21 @@ import (
 )
 
 type AuthHandler struct {
-	AuthService auth.AuthService
+	AuthService auth.Service
 }
 
 func (authHandler *AuthHandler) Register(c *gin.Context) {
 	user := model.User{}
 	if err := c.ShouldBind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		var errWrap = model.NewError(err)
+		fmt.Println(errWrap)
+		c.JSON(http.StatusAccepted, gin.H{"error": "body?"})
 		return
 	}
 	err := authHandler.AuthService.Register(&user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.WrapError()})
+		fmt.Println(err.String())
+		c.JSON(http.StatusAccepted, gin.H{"error": "Register failed"})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"status": "created"})
@@ -29,12 +33,15 @@ func (authHandler *AuthHandler) Register(c *gin.Context) {
 func (authHandler *AuthHandler) Login(c *gin.Context) {
 	user := model.User{}
 	if err := c.ShouldBind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		var errWrap = model.NewError(err)
+		fmt.Println(errWrap)
+		c.JSON(http.StatusAccepted, gin.H{"error": "body?"})
 		return
 	}
 	token, err := authHandler.AuthService.Login(&user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.WrapError()})
+		fmt.Println(err)
+		c.JSON(http.StatusAccepted, gin.H{"error": "Login failed"})
 		return
 	}
 	c.JSON(http.StatusCreated, token)

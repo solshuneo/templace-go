@@ -6,32 +6,33 @@ import (
 )
 
 type wrapError struct {
-	err      *error
-	nameAddr *string
-	file     *string
-	line     *int
-	ok       *bool
+	msg      string
+	nameAddr string
+	file     string
+	line     int
 }
 type WrapError interface {
-	WrapError() string
+	String() string
 }
 
-func (err *wrapError) WrapError() string {
+func (err *wrapError) String() string {
 
-	return fmt.Sprintf("Name: %s\nFile: %s\nLine: %d\nMessageL:  %s", *err.nameAddr, *err.file, *err.line, (*err.err).Error())
+	return fmt.Sprintf("--------DEBUGGER-----------------\n"+
+		"Name: %s\nFile: %s\nLine: %d\nMessageL:  %s\n"+
+		"--------DEBUGGER-----------------\n", err.nameAddr, err.file, err.line, err.msg)
 }
 
-func NewError(err *error) WrapError {
+func NewError(err error) WrapError {
 	var fatherFunctionCaller = 1
 	pc, file, line, ok := runtime.Caller(fatherFunctionCaller)
 	if !ok {
-		print("loi toi")
+		panic("Panic in NewError")
 	}
 	nameAddr := runtime.FuncForPC(pc).Name()
 	return &wrapError{
-		err:      err,
-		nameAddr: new(nameAddr),
-		file:     &file,
-		line:     &line,
+		msg:      err.Error(),
+		nameAddr: nameAddr,
+		file:     file,
+		line:     line,
 	}
 }
