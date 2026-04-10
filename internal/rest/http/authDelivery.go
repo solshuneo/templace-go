@@ -18,16 +18,25 @@ func (authHandler *AuthHandler) Register(c *gin.Context) {
 	if err := c.ShouldBind(&user); err != nil {
 		var errWrap = model.NewError(err)
 		fmt.Println(errWrap)
-		c.JSON(http.StatusAccepted, gin.H{"error": "body?"})
+		c.JSON(http.StatusAccepted, model.Response{
+			Status:  "failed",
+			Message: "Body?",
+		})
 		return
 	}
 	err := authHandler.AuthService.Register(&user)
 	if err != nil {
 		fmt.Println(err.String())
-		c.JSON(http.StatusAccepted, gin.H{"error": "Register failed"})
+		c.JSON(http.StatusAccepted, model.Response{
+			Status:  "failed",
+			Message: "Register failed",
+		})
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"status": "created"})
+	c.JSON(http.StatusCreated, model.Response{
+		Status:  "success",
+		Message: "Register success",
+	})
 
 }
 func (authHandler *AuthHandler) Login(c *gin.Context) {
@@ -35,13 +44,19 @@ func (authHandler *AuthHandler) Login(c *gin.Context) {
 	if err := c.ShouldBind(&user); err != nil {
 		var errWrap = model.NewError(err)
 		fmt.Println(errWrap)
-		c.JSON(http.StatusAccepted, gin.H{"error": "body?"})
+		c.JSON(http.StatusAccepted, model.Response{
+			Status:  "failed",
+			Message: "Body?",
+		})
 		return
 	}
 	token, err := authHandler.AuthService.Login(&user)
 	if err != nil {
 		fmt.Println(err)
-		c.JSON(http.StatusAccepted, gin.H{"error": "Login failed"})
+		c.JSON(http.StatusAccepted, model.Response{
+			Status:  "failed",
+			Message: "Login failed",
+		})
 		return
 	}
 	c.JSON(http.StatusCreated, token)
