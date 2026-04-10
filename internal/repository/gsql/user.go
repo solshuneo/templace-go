@@ -23,9 +23,21 @@ func (user *User) BeforeCreate() {
 func toGormUser(entityUser *model.User) User {
 	return User{Username: entityUser.Username, Password: entityUser.Password}
 }
+func toModelUser(gsqlUser *User) model.User {
+	return model.User{Username: gsqlUser.Username, Password: gsqlUser.Password}
+}
 
 type GormUserRepository struct {
 	db *gorm.DB
+}
+
+func (gormUser *GormUserRepository) FindById(userId string) (*model.User, model.WrapError) {
+	user := User{}
+	err := gormUser.db.Where("id = ?", userId).First(&user).Error
+	if err != nil {
+		return nil, model.NewError(err)
+	}
+	return new(toModelUser(&user)), nil
 }
 
 func NewGormUserRepository(db *gorm.DB) *GormUserRepository {

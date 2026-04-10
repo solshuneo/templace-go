@@ -23,8 +23,14 @@ func main() {
 		AuthService: authService,
 	}
 	r := gin.Default()
-	r.Use(http.AuthMiddleware())
-	r.POST("/register", authHandler.Register)
-	r.POST("/login", authHandler.Login)
+	v1 := r.Group("/api/v1")
+
+	{
+		v1.POST("/register", authHandler.Register)
+		v1.POST("/login", authHandler.Login)
+		v1.POST("/me", http.AuthMiddleWare(), authHandler.Profile)
+		v1.POST("/refreshtoken", authHandler.RefreshToken)
+	}
+
 	_ = r.Run(":8080")
 }
