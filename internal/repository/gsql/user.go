@@ -12,14 +12,13 @@ type User struct {
 	Id       string `gorm:"primaryKey"`
 	Username string `gorm:"unique;not null"`
 	Password string
-	CreateAt time.Time
-	UpdateAt time.Time
+	CreateAt string
 }
 
-func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
+func (user *User) BeforeCreate() {
 	// UUID version 4
 	user.Id = uuid.NewString()
-	return
+	user.CreateAt = time.Now().Format("2006-01-02 15:04:05+07")
 }
 func toGormUser(entityUser *model.User) User {
 	return User{Username: entityUser.Username, Password: entityUser.Password}
@@ -35,10 +34,8 @@ func NewGormUserRepository(db *gorm.DB) *GormUserRepository {
 
 func (gormUser *GormUserRepository) Create(user *model.User) model.WrapError {
 	localUser := toGormUser(user)
-	var err = localUser.BeforeCreate(gormUser.db)
-	if err != nil {
-		return model.NewError(err)
-	}
+	localUser.BeforeCreate()
+
 	result := gormUser.db.Create(&localUser)
 	if result.Error != nil {
 		return model.NewError(result.Error)
