@@ -1,13 +1,15 @@
 package auth
 
 import (
+	"lotesaleagent/internal/repository/gsql"
 	"lotesaleagent/model"
+	"lotesaleagent/model/token"
 	"sync"
 )
 
 type UserInterface interface {
 	Create(user *model.User) model.WrapError
-	Find(user *model.User) model.WrapError
+	Find(user *model.User) (*gsql.User, model.WrapError)
 }
 
 type Service struct {
@@ -22,7 +24,17 @@ func (auth *Service) Register(user *model.User) model.WrapError {
 	return err
 }
 
-func (auth *Service) Login(user *model.User) (*model.Token, model.WrapError) {
-	var err = auth.UserInterface.Find(user)
-	return model.NewToken(), err
+func (auth *Service) Login(user *model.User) (*token.Token, model.WrapError) {
+	var foundUser, err = auth.UserInterface.Find(user)
+	if err != nil {
+		return nil, err
+	}
+	payload := make(map[string]any)
+	payload["id"] = foundUser.Id
+	payload["username"] = foundUser.Username
+	payload["password"] = foundUser.Password
+	return &token.Token{
+		Access:  token.Create(make(map[string]any), token.ExpiryDurationAccess),
+		Refresh: token.Create(make(map[string]any), token.ExpiryDurationRefresh),
+	}, nil
 }

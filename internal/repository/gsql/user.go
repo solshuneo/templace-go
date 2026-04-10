@@ -43,10 +43,11 @@ func (gormUser *GormUserRepository) Create(user *model.User) model.WrapError {
 	return nil
 }
 
-func (gormUser *GormUserRepository) Find(user *model.User) model.WrapError {
-	result := gormUser.db.Where("username = ? and password = ?", user.Username, user.Password).First(user)
+func (gormUser *GormUserRepository) Find(user *model.User) (*User, model.WrapError) {
+	var foundUser User
+	result := gormUser.db.Where("username = ? and password = ?", user.Username, user.Password).First(&foundUser)
 	if result.Error != nil {
-		return model.NewError(result.Error)
+		return nil, model.NewError(result.Error)
 	}
-	return nil
+	return &foundUser, nil
 }
