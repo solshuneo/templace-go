@@ -26,6 +26,16 @@ func NewGormUserRepository(db *gorm.DB) *GormUserRepository {
 
 func (gormUser *GormUserRepository) Create(user *model.User) model.WrapError {
 	result := gormUser.db.Create(new(toGormUser(user)))
+	if result.Error != nil {
+		return model.NewError(&result.Error)
+	}
+	return nil
+}
 
-	return model.NewError(&result.Error)
+func (gormUser *GormUserRepository) Find(user *model.User) model.WrapError {
+	result := gormUser.db.Where("username = ? and password = ?", user.Username, user.Password).First(user)
+	if result.Error != nil {
+		return model.NewError(&result.Error)
+	}
+	return nil
 }

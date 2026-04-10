@@ -23,6 +23,7 @@ func main() {
 		AuthService: authService,
 	}
 	r := gin.Default()
-	r.POST("/", authHandler.Register)
+	r.POST("/register", authHandler.Register)
+	r.POST("/login", authHandler.Login)
 	_ = r.Run(":8080")
 }

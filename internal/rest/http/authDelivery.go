@@ -12,12 +12,6 @@ type AuthHandler struct {
 	AuthService auth.AuthService
 }
 
-func NewAuthHandler(authService auth.AuthService) *AuthHandler {
-	return &AuthHandler{
-		AuthService: authService,
-	}
-}
-
 func (authHandler *AuthHandler) Register(c *gin.Context) {
 	user := model.User{}
 	if err := c.ShouldBind(&user); err != nil {
@@ -31,4 +25,17 @@ func (authHandler *AuthHandler) Register(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, gin.H{"status": "created"})
 
+}
+func (authHandler *AuthHandler) Login(c *gin.Context) {
+	user := model.User{}
+	if err := c.ShouldBind(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	token, err := authHandler.AuthService.Login(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.WrapError()})
+		return
+	}
+	c.JSON(http.StatusCreated, token)
 }
