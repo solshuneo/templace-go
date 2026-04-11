@@ -10,7 +10,7 @@ import (
 type User struct {
 	Id       string `gorm:"primaryKey"`
 	Username string `json:"Username" gorm:"unique;not null"`
-	Password string `json:"Password" gorm:"<-:create;<-:update;->:false"`
+	Password string `json:"Password" gorm:"<-"`
 	CreateAt string
 }
 
