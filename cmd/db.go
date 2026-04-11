@@ -12,7 +12,7 @@ var db *gorm.DB
 
 func initDB() {
 	dbHost := "postgres"
-	dbPort := "5431"
+	dbPort := "5432"
 	dbName := "database"
 	dbUser := "shuneo"
 	dbPass := "123123123"

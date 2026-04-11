@@ -1,6 +1,8 @@
 services:
   app:
     build: .
+    container_name: app
+    image: template-go
     ports:
       - "8080:8080"
     depends_on:
