@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"lotesaleagent/internal/repository/gsql"
 	"lotesaleagent/model"
 	"lotesaleagent/model/token"
 	"maps"
@@ -11,7 +10,7 @@ import (
 
 type UserInterface interface {
 	Create(user *model.User) model.WrapError
-	Find(user *model.User) (*gsql.User, model.WrapError)
+	Find(user *model.User) (*model.User, model.WrapError)
 	FindById(userId string) (*model.User, model.WrapError)
 }
 
