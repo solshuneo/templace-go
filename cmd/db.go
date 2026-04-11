@@ -11,9 +11,9 @@ import (
 var db *gorm.DB
 
 func initDB() {
-	dbHost := "localhost"
+	dbHost := "postgres"
 	dbPort := "5432"
-	dbName := "postgres"
+	dbName := "database"
 	dbUser := "shuneo"
 	dbPass := "123123123"
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Ho_Chi_Minh", dbHost, dbUser, dbPass, dbName, dbPort)

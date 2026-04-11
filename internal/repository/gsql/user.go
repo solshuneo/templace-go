@@ -1,6 +1,7 @@
 package gsql
 
 import (
+	"fmt"
 	"lotesaleagent/model"
 
 	"gorm.io/gorm"
@@ -25,7 +26,7 @@ func NewGormUserRepository(db *gorm.DB) *GormUserRepository {
 
 func (gormUser *GormUserRepository) Create(user *model.User) model.WrapError {
 	user.BeforeCreate()
-
+	fmt.Println(user)
 	result := gormUser.db.Create(user)
 	if result.Error != nil {
 		return model.NewError(result.Error)
