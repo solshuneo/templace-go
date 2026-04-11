@@ -1,7 +1,6 @@
 services:
   app:
     build: .
-
     ports:
       - "8080:8080"
     depends_on:
@@ -10,12 +9,22 @@ services:
     image: postgres:latest
     container_name: postgres
     ports:
-      - "5431:5432"
+      - "5432:5432"
     volumes:
-      - template:/dataaaa
+      - template:/postgresData
     environment:
       POSTGRES_PASSWORD: 123123123
       POSTGRES_USER: shuneo
       POSTGRES_DB: database
+      PGDATA: /data
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 123123123
+    volumes:
+      - template:/redisData
+
 volumes:
   template:
