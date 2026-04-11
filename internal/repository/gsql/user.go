@@ -2,7 +2,7 @@ package gsql
 
 import (
 	"fmt"
-	"lotesaleagent/model"
+	"template-go/model"
 
 	"gorm.io/gorm"
 )

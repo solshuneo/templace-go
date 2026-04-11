@@ -2,9 +2,9 @@ package http
 
 import (
 	"fmt"
-	"lotesaleagent/auth"
-	"lotesaleagent/model"
 	"net/http"
+	"template-go/auth"
+	"template-go/model"
 
 	"github.com/gin-gonic/gin"
 )

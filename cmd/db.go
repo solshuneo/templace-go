@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"lotesaleagent/model"
+	"template-go/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -12,7 +12,7 @@ var db *gorm.DB
 
 func initDB() {
 	dbHost := "postgres"
-	dbPort := "5432"
+	dbPort := "5431"
 	dbName := "database"
 	dbUser := "shuneo"
 	dbPass := "123123123"

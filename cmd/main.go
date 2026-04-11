@@ -1,10 +1,10 @@
 package main
 
 import (
-	"lotesaleagent/auth"
-	"lotesaleagent/internal/repository/gsql"
-	"lotesaleagent/internal/rest/http"
-	"lotesaleagent/model"
+	"template-go/auth"
+	"template-go/internal/repository/gsql"
+	"template-go/internal/rest/http"
+	"template-go/model"
 
 	"github.com/gin-gonic/gin"
 )

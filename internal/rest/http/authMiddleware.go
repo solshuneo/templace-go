@@ -2,10 +2,10 @@ package http
 
 import (
 	"fmt"
-	"lotesaleagent/model"
-	"lotesaleagent/model/token"
 	"net/http"
 	"strings"
+	"template-go/model"
+	"template-go/model/token"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,7 @@ import (
 
 func AuthMiddleWare() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
+
 		authHeader := c.Request.Header.Get("Authorization")
 		if !strings.HasPrefix(authHeader, "Bearer ") {
 			c.JSON(

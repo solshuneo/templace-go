@@ -2,10 +2,10 @@ package auth
 
 import (
 	"errors"
-	"lotesaleagent/model"
-	"lotesaleagent/model/token"
 	"maps"
 	"sync"
+	"template-go/model"
+	"template-go/model/token"
 )
 
 type UserInterface interface {
