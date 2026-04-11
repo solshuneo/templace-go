@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - template:/postgresData
+      - template-postgres:/data
     environment:
       POSTGRES_PASSWORD: 123123123
       POSTGRES_USER: shuneo
@@ -24,7 +24,9 @@ services:
       - "6379:6379"
     command: redis-server --requirepass 123123123
     volumes:
-      - template:/redisData
+      - template-redis:/data
 
 volumes:
-  template:
+  template-redis:
+  template-postgres:
+
